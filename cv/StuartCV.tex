@@ -1,0 +1,351 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Simple LaTeX CV Template %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NOTE: If you find that it says                                     %%
+%%                                                                    %%
+%%                           1 of ??                                  %%
+%%                                                                    %%
+%% at the bottom of your first page, this means that the AUX file     %%
+%% was not available when you ran LaTeX on this source. Simply RERUN  %%
+%% LaTeX to get the ``??'' replaced with the number of the last page  %%
+%% of the document. The AUX file will be generated on the first run   %%
+%% of LaTeX and used on the second run to fill in all of the          %%
+%% references.                                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Don't like 10pt? Try 11pt or 12pt
+\documentclass[10pt]{article}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+
+% Simpler bibsection for CV sections
+% (thanks to natbib for inspiration)
+\makeatletter
+\newlength{\bibhang}
+\setlength{\bibhang}{1em}
+\newlength{\bibsep}
+ {\@listi \global\bibsep\itemsep \global\advance\bibsep by\parsep}
+\newenvironment{bibsection}
+    {\minipage[t]{\linewidth}\list{}{%
+        \setlength{\leftmargin}{\bibhang}%
+        \setlength{\itemindent}{-\leftmargin}%
+        \setlength{\itemsep}{\bibsep}%
+        \setlength{\parsep}{\z@}%
+        }}
+    {\endlist\endminipage}
+\makeatother
+
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO: Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE THE ``of LASTPAGE'' next to each page number,
+% see the note about the +LP and -LP lines below. Comment out the +LP
+% and uncomment the -LP.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+\usepackage[paper=letterpaper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=1.2in,     % Length of section titles
+            marginparsep=.05in,       % Space between titles and text
+            margin=1in,               % 1 inch margins
+            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+%\usepackage[paper=a4paper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%            marginparsep=1.5mm,       % Space between titles and text
+%            margin=25mm,              % 25mm margins
+%            includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+%% This gives us fun enumeration environments. compactitem will be nice.
+\usepackage{paralist}
+
+%% Reference the last page in the page number
+%
+% NOTE: comment the +LP line and uncomment the -LP line to have page
+%       numbers without the ``of ##'' last page reference)
+%
+% NOTE: uncomment the \pagestyle{empty} line to get rid of all page
+%       numbers (make sure includefoot is commented out above)
+%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+%\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+%
+% Usage: \makeheading{name}
+%
+% Place at top of document. It should be the first thing.
+\newcommand{\makeheading}[1]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+                {\large \bfseries #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+% The section headings
+%
+% Usage: \section{section name}
+%
+% Follow this section IMMEDIATELY with the first line of the section
+% text. Do not put whitespace in between. That is, do this:
+%
+%       \section{My Information}
+%       Here is my information.
+%
+% and NOT this:
+%
+%       \section{My Information}
+%
+%       Here is my information.
+%
+% Otherwise the top of the section header will not line up with the top
+% of the section. Of course, using a single comment character (%) on
+% empty lines allows for the function of the first example with the
+% readability of the second example.
+\renewcommand{\section}[2]%
+        {\pagebreak[2]\vspace{1.3\baselineskip}%
+         \phantomsection\addcontentsline{toc}{section}{#1}%
+         \hspace{0in}%
+         \marginpar{
+         \raggedright \scshape #1}#2}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+% An environment IDENTICAL to outerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{list}{#1}{%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+
+% An itemize-style list with little space between items
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{compactitem}[#1]}{\end{compactitem}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[2]}
+
+%
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeheading{Stuart Lynn}
+
+\section{Contact Information}
+%
+% NOTE: Mind where the & separators and \\ breaks are in the following
+%       table.
+%
+% ALSO: \rcollength is the width of the right column of the table
+%       (adjust it to your liking; default is 1.85in).
+%
+\newlength{\rcollength}\setlength{\rcollength}{1.85in}%
+%
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+160 Wyckoff Avenue  & \textit{Phone:} 312-394-0797\\
+Brooklyn &  \textit{E-mail:}\href{mailto:stuart.lynn@gmail.com}{stuart.lynn@gmail.com} \\
+NY 11237 &\emph{D.O.B:} February 6, 1984 & & \emph{US worker status:} O1 Visa \\
+   & \emph {Place of Birth:} Irving, Scotland
+\end{tabular}
+
+
+
+
+\section{Education}
+%
+\href{http://www.roe.ac.uk/ifa}{\textbf{University of Edinburgh}},
+\begin{outerlist}
+\item[] {Ph.D., Astrophysics, 2005 - 2009}
+\item[] {Thesis Topic: Simulation Large Cosmology surveys with calibrated halo models}
+\item[] {Adviser: Professor John Peacock}
+\item[] {MPhys (First Class), Mathematical Physics, 2000-2005}
+
+\end{outerlist}
+
+\section {Employment}
+\begin{outerlist}
+
+\item[] {\emph{CARTO (2016-current)} - Head of Research and Data. Responsible for leading a team of 5 data scientists tasked with bringing modern algorithmic, statistical and machine learning practices to the CARTO platform and engaging with external clients to help solve their spatial data science problems. Also responsible for overseeing the construction, development and maintenance of the CARTO Data Observatory: a curated, normalized, easy to use repository of geospatial data.
+
+\item[] {\emph{CARTO (2015-2016)} - Spatial Data Scientist. Developed algorithms for the CARTO builder which enabled users to perform spatial econometrics,  statistics, machine learning and other advanced analytics on their data in the CARTO platform. Wrote documentation and examples showing the powers of these methods, and worked with clients to use them to provide value to their spatial data. Ran workshops and gave presentations at conferences like STRATA and FOSS4G promoting the use of machine learning in GIS.
+
+\item[] {\emph{Adler Planetarium (2013-2015)} - Zooniverse Technical lead. Co-ordinated a team of 10 developers split between the Adler Planetarium and Oxford
+university to build and maintain the projects and underlying infrastructure that constitute the Zooniverse. Provided leadership and direction and acted as PI on
+a number of grants researching ways to understand and move forward the field of
+Citizen Science. (Work undertaken on an H1B Visa)}
+
+\item[] {\emph{Adler Planetarium (2013-2015)} - Postdoctoral researcher for NSF Social-Computational Systems Grant at the Zooniverse. (Work undertaken on an H1B Visa)}
+
+\item[] {\emph{Adler Planetarium (2012-2013)} - SETI Citizen Science project developer. (Work undertaken on an H1B Visa)}
+
+\item[] {\emph{Oxford University James Martin Fellow (2011-2012) }- Researcher and developer on the Zooniverse citizen science project.}
+
+\item[]{\emph{Oxford University (2010-2011) } - Postdoctoral researcher and developer on the Zooniverse citizen science project.}
+
+\item[]{\emph{University of Edinburgh - Postdoctoral researcher (2009 - 2010)} I was employed by the University of Edinburgh to work on the EUCLID project. This involved using methods developed in my PhD to produce mock galaxy catalogues.}
+
+\item[]{\emph{Royal Observatory Visitors Centre (2001-2006)} - Part time position at the Royal Observatory Visitors Centre as a science communicator and duty officer.}
+
+\end{outerlist}
+
+
+\section{Grants}
+\begin{outerlist}
+\item[] {\emph{Principle Investigator - NSF: Social Computing Systems}. The SOCS grant was awarded to the Zooniverse to create a next generation platform for citizen science. The aim of this platform was to better utilize and target the attention of citizen scientists by combining sophisticated user modelling  with machine learning algorithms. This was accomplished by collaborating  with machine learning experts and  sociologists at Microsoft Research and  Syracuse University }
+
+\item[] {\emph{Principle Investigator - NEH: Scribe}. A joint grant with the New York Public library. This grant drew on the success of crowdsourced transcription projects like ``OldWeather``, ``NotesFromNature`` and ``Whats on the Menu`` to produce an open source transcription platform that will allows museums and collections around the world to quickly develop their own transcription projects.}
+
+\end{outerlist}
+
+\section{Fellowships}
+\begin{outerlist}
+\item[] {\emph {Oxford Martin School Fellow}.  I was a fellow in the Cosmology stream of the Oxford Martin School. This school is set up to promote cross discipline interaction to solve the problems facing humanity in the coming century. This fellowship supported the work on the OldWeather project.}
+
+\item[] {\emph {Beltane Beacon for Public Engagement Fellowship}. The Edinburgh Beltane Beacons for public engagement fellowship program is a program to encourage outreach within university departments and to promote a culture of engagement.
+\end{outerlist}
+
+\section{Hackathon and Civic Events Organization}
+\begin{outerlist}
+\item[] {\emph{Science Hack Day/ Space Apps Challenge Brooklyn Organizer 2016/2017}. Organized Science Hack day and Space Apps Challenge events in Brooklyn}
+\item[] {\emph{Science Hack Day Ambassador 2012/2014}. Organized annual Science Hack Days at the Adler planetarium, where participants spent 24 hours at the Adler to produce science-based projects }
+\item[] {\emph{Civi Hack Day Organizer}.  Organized annual Civic hack days at the Adler planetarium as part of the National Day of Civic hacking.}
+\item[] {\emph{Dark Skies Scotland}. This was a program to bring Astronomy to rural parts of Scotland and to promote dark skies tourism. I organized, participated in and delivered presentations, demos and talks, and worked with the core team to produce resources for the project.}
+\end{outerlist}
+
+
+
+\section{Technical Skills}
+\begin{outerlist}
+\item[] { \emph{Programing Languages} python, Tensorflow, scikit-learn, Kearas, Pysal,  }
+\item[] { \emph{Programing Languages} C, C++, Objective C, Java, Fortran, Python, Unix shell scripting, SQL, CVS, SVN, Perl. Web Technologies: PHP, Javascript, node, Ember.js, React, Polymer, SQL (MYSQL, postgreSQL), POSTGIS, CSS, XML, XHTML, Ruby On Rails, MongoDB}
+
+\item[] { \emph{Other:} Github,TEX, LATEX, BibTEX, and other common productivity packages for Windows, OS X, and Linux platforms. Amazon Web Services, Heroku and other highly scalable web deployment platforms.}
+\end{outerlist}
+
+
+\section{Open Source Projects}
+
+\begin{outerlist}
+
+\item[]{\emph{Cranskshaft} (https://github.com/CartoDB/crankshaft)  Crankshaft is a set of PLPSQL functions and PlPythonU functions that bring spatial econometric, machine learning and advanced GIS functionality to PostgreSQL}
+
+\item[]{\emph{Scribe} (https://github.com/zooniverse/Scribe)  Scribe is a framework for generating crowd-sourced transcriptions of image-based documents. It provides a system for generating templates which, combined with a magnification tool, guide a user through the process of transcribing an asset (an image).}
+
+\item[]{\emph{Journal of Brief Ideas} (https://github.com/openjournals/brief-ideas) The Journal of Brief Ideas is an experimental journal specifically for short ideas and results. With a limit of 200 words, the journal encourages people to share ideas that are too short for conventional papers. }
+
+\item[]{\emph{The Open Journal} (https://github.com/openjournals/theoj) The Open Journal is a platform that allows anyone to set up a peer reviewed journal. It allows editors to assign papers to reviewers who then can review submitted papers and interact with their authors through a novel and intuitive web-based interface. }
+
+\end{outerlist}
+
+
+\section{Publications}
+\begin{outerlist}
+
+\item[]{\emph{Crowdsourcing the General Public for Large Scale Molecular Pathology Studies in Cancer}Francisco J. Candido dos Reisa, b, Stuart Lynnc, H. Raza Alid, Diana Ecclese, Andrew Hanbyf, Elena Provenzanog, Carlos Caldasd, William J. Howatd, Leigh-Anne McDuffusd, Bin Liud, Frances Daley (EBioMedicine)}}
+\item[]{\emph{Talking in the Zooniverse: A collaborative tool for citizen scientists} Lucy Fortson, Stuart Lynn (CTS)}
+\item[] {\emph{Planet Hunters X. KIC 8462852 - Where's the Flux?}T. S. Boyajian, D. M. LaCourse, S. A. Rappaport, D. Fabrycky, D. A. Fischer, D. Gandolfi, G. M. Kennedy, H. Korhonen, M. C. Liu, A. Moor, K. Olah, K. Vida, M. C. Wyatt, W. M. J. Best, J. Brewer, F. Ciesla, B. Csak, H. J. Deeg, T. J. Dupuy, G. Handler, K. Heng, S. B. Howell, S. T. Ishikawa, J. Kovacs, T. Kozakis, L. Kriskovics, J. Lehtinen, C. Lintott, S. Lynn, D. Nespral, S. Nikbakhsh, K. Schawinski, J. R. Schmitt, A. M. Smith, Gy. Szabo, R. Szabo, J. Viuho, J. Wang, A. Weiksnar, M. Bosch, J. L. Connors, S. Goodman, G. Green, A. J. Hoekstra, T. Jebson, K. J. Jek, M. R. Omohundro, H. M. Schwengeler, A. Szewczyk (MNRAS)}
+\item[] {\emph{The Red Radio Ring: a gravitationally lensed hyperluminous infrared radio galaxy at z=2.553 discovered through citizen science} J. E. Geach (Hertfordshire), A. More, A. Verma, P. J. Marshall, N. Jackson, P.-E. Belles, R. Beswick, E. Baeten, M. Chavez, C. Cornen, B. E. Cox, T. Erben, N. J. Erickson, S. Garrington, P. A. Harrison, K. Harrington, D. H. Hughes, R. J. Ivison, C. Jordan, Y.-T. Lin, A. Leauthaud, C. Lintott, S. Lynn, A. Kapadia, J.-P. Kneib, C. Macmillan, M. Makler, G. Miller, A. Montana, R. Mujica, T. Muxlow, G. Narayanan, D. O Briain, T. O'Brien, M. Oguri, E. Paget, M. Parrish, N. P. Ross, E. Rozo, E. Rusu, E. S. Rykoff, D. Sanchez-Arguelles, R. Simpson, C. Snyder, F. P. Schloerb, M. Tecza, L. Van Waerbeke, J. Wilcox, M. Viero, G. W. Wilson, M. S. Yun, M. Zeballos (MNRAS)}
+
+\item[] {\emph{Planet Hunters X: Searching for Nearby Neighbors of 75 Planet and Eclipsing Binary Candidates from the K2 Kepler Extended Mission} Joseph R. Schmitt, Andrei Tokovinin, Ji Wang, Debra A. Fischer, Martti H. Kristiansen, Daryll M. LaCourse, Robert Gagliano, Arvin Joseff V. Tan, Hans Martin Schwengeler, Mark R. Omohundro, Alexander Venner, Ivan Terentev, Allan R. Schmitt, Thomas L. Jacobs, Troy Winarski, Johann Sejpka, Kian J. Jek, Tabetha S. Boyajian, John M. Brewer, Sascha T. Ishikawa, Chris Lintott, Stuart Lynn, Kevin Schawinski, Megan E. Schwamb, Alex Weiksnar (ApJ)}
+\item[] {\emph {"I want to be a Captain! I want to be a Captain!": Gamification in the Old Weather citizen science project.} Gamification '13: Proceedings of the First International Conference on Gameful Design, Research, and Applications. (pp. 79 - 82): Eveleigh, A; Jennett, C; Lynn, S; Cox, AL;}
+
+\item[] {\emph{Planet Hunters VII. Discovery of a New Low-Mass, Low-Density Planet (PH3 c) Orbiting Kepler-289 with Mass Measurements of Two Additional Planets (PH3 b and d)} -Joseph R. Schmitt, Eric Agol, Katherine M. Deck, Leslie A. Rogers, J. Zachary Gazak, Debra A. Fischer, Ji Wang, Matthew J. Holman, Kian J. Jek, Charles Margossian, Mark R. Omohundro, Troy Winarski, John M. Brewer, Matthew J. Giguere, Chris Lintott, Stuart Lynn, Michael Parrish, Kevin Schawinski, Megan E. Schwamb, Robert Simpson, Arfon M. Smith (ApJ)}
+
+\item[]{\emph{Planet Hunters. VI: An Independent Characterization of KOI-351 and Several Long Period Planet Candidates from the Kepler Archival Data} - Joseph R. Schmitt, Ji Wang, Debra A. Fischer, Kian J. Jek, John C. Moriarty, Tabetha S. Boyajian, Megan E. Schwamb, Chris Lintott, Stuart Lynn, Arfon M. Smith, Michael Parrish, Kevin Schawinski, Robert Simpson, Daryll LaCourse, Mark R. Omohundro, Troy Winarski, Samuel Jon Goodman, Tony Jebson, Hans Martin Schwengeler, David A. Paterson, Johann Sejpka, Ivan Terentev, Tom Jacobs, Nawar Alsaadi, Robert C. Bailey, Tony Ginman, Pete Granado, Kristoffer Vonstad Guttormsen, Franco Mallia, Alfred L. Papillon, Franco Rossi, Miguel Socolovsky (ApJ)}
+
+\item[] {\emph{Planet Hunters. V. A Confirmed Jupiter-Size Planet in the Habitable Zone and 42 Planet Candidates from the Kepler Archive Data} - Ji Wang, Debra A. Fischer, Thomas Barclay, Tabetha S. Boyajian, Justin R. Crepp, Megan E. Schwamb, Chris Lintott, Kian J. Jek, Arfon M. Smith, Michael Parrish, Kevin Schawinski, Joseph Schmitt, Matthew J. Giguere, John M. Brewer, Stuart Lynn, Robert Simpson, Abe J. Hoekstra, Thomas Lee Jacobs, Daryll LaCourse, Hans Martin Schwengeler, Mike Chopin (ApJ)}
+
+\item[] {\emph{Planet Hunters: the first two planet candidates identified by the public using the Kepler public archive data} -Fischer, Debra A.; Schwamb, Megan E.; Schawinski, Kevin; Lintott, Chris; Brewer, John; Giguere, Matt; Lynn, Stuart; Parrish, Michael; Sartori, Thibault; Simpson, Robert; Smith, Arfon; Spronck, Julien; Batalha, Natalie; Rowe, Jason; Jenkins, Jon; Bryson, Steve; Prsa, Andrej; Tenenbaum, Peter; Crepp, Justin; Morton, Tim; Howard, Andrew; Beleu, Michele; Kaplan, Zachary; Vannispen, Nick; Sharzer, Charlie; Defouw, Justin; Hajduk, Agnieszka; Neal, Joe P.; Nemec, Adam; Schuepbach, Nadine; Zimmermann, Valerij (MNRAS) }
+
+\item[] {\emph{Planet Hunters: Assessing the Kepler Inventory of Short-period Planets} -Schwamb, Megan E.; Lintott, Chris J.; Fischer, Debra A.; Giguere, Matthew J.; Lynn, Stuart; Smith, Arfon M.; Brewer, John M.; Parrish, Michael; Schawinski, Kevin; Simpson, Robert J. (ApJ) }
+
+\item[] {\emph{Planet Hunters: New Kepler planet candidates from analysis of quarter 2} -Lintott, Chris J.; Schwamb, Megan E.; Barclay, Thomas; Sharzer, Charlie; Fischer, Debra A.; Brewer, John; Giguere, Matthew; Lynn, Stuart; Parrish, Michael; Batalha, Natalie; Bryson, Steve; Jenkins, Jon; Ragozzine, Darin; Rowe, Jason F.; Schwainski, Kevin; Gagliano, Robert; Gilardi, Joe; Jek, Kian J.; P��kk�nen, Jari-Pekka; Smits, Tjapko (AJ) }
+
+\item[] {\emph{The Galaxy Zoo survey for giant AGN-ionized clouds: past and present black-hole accretion events}- William C. Keel, S. Drew Chojnowski, Vardha N. Bennert, Kevin Schawinski, Chris J. Lintott, Stuart Lynn, Anna Pancoast, Chelsea Harris, A. M. Nierenberg, Alessandro Sonnenfeld, Richard Proctor (MNRAS)}
+
+\item[] {\emph{The History and Environment of a Faded Quasar: Hubble Space Telescope observations of Hanny's Voorwerp and IC 2497}- William C. Keel, Chris J. Lintott, Kevin Schawinski, Vardha N. Bennert, Daniel Thomas, Anna Manning, S. Drew Chojnowski, Hanny van Arkel, Stuart Lynn (ApJ)}
+
+\item[] {\emph{Planet Hunters: A Transiting Circumbinary Planet in a Quadruple Star System} -Schwamb, Megan E.; Orosz, Jerome A.; Carter, Joshua A.; Welsh, William F.; Fischer, Debra A.; Torres, Guillermo; Howard, Andrew W.; Crepp, Justin R.; Keel, William C.; Lintott, Chris J.; Kaib, Nathan A.; Terrell, Dirk; Gagliano, Robert; Jek, Kian J.; Parrish, Michael; Smith, Arfon M.; Lynn, Stuart; Simpson, Robert J.; Giguere, Matthew J.; Schawinski, Kevin (ApJ }
+
+\item[] {\emph{Galaxy Zoo: Multi-Mergers and the Millennium Simulation} -Darg, D. W; Kaviraj, S. ; Lintott, C. J.; Schawinski, K.; Silk, J.; Lynn, S.; Bamford, S.; Nichol, R. C. }
+\item[] {\emph{Galaxy Zoo Supernovae } -A. M. Smith, S. Lynn, M. Sullivan, C. J. Lintott, P. E. Nugent, J. Botyanszki, M. Kasliwal, R. Quimby, S. P. Bamford, L. F. Fortson, K. Schawinski, I. Hook, S. Blake, P. Podsiadlowski, J. Joensson, A. Gal-Yam, I. Arcavi, D. A. Howell, J. S. Bloom, J. Jacobsen, S. R. Kulkarni, N. M. Law, E. O. Ofek, R. Walters (MNRAS 412 1390-1319) }
+\end{outerlist}
+
+\section{Selected Talks and presentations}
+\begin{outerlist}
+\item[] {\emph{\href{https://app.mozillafestival.org/#_session-140}{Mozfest 2016: Thinking Spatially: How location intelligence can enhance your data and let you uncover new insights}}}
+\item[] {\emph{\href{https://app.mozillafestival.org/#_session-13}{Mozfest 2016: The Open Segments project: Taking back how we define our communities}}}
+\item[] {\emph{\href{https://conferences.oreilly.com/strata/strata-ny-2016/public/schedule/detail/51975}{Strata 2016: Designing a location intelligence platform for everyone by integrating data, analysis, and cartography}}}
+\item[] {\emph{\href{https://www.youtube.com/watch?v=U0D-G5EoFQ4}{FOSS4G 2016: Wrapping up Python into a Cloud-based PostgreSQL}}}
+\item[] {\emph{\href{https://www.youtube.com/watch?v=qpJqz1LgkYo}{Boston Big Data Festival 2015: Real time maps from distributed sources}}}
+\item[] {\emph{\href{https://www.youtube.com/watch?v=KD-Cx-LAykk}{Public Participation in Scientific Research Under Western Skies}}}
+\item[] {\emph{\href{https://www.wilsoncenter.org/event/new-visions-for-citizen-science}{Wilson center: New Visions for Citizen Science 2013}}}
+\item[] {\emph{\href{https://www.whitehouse.gov/ostp}{White House OSTP Crowdsource Games Workshop 2014}}}
+
+\end{puterlist}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% End CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
